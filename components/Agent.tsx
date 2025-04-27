@@ -83,6 +83,7 @@ const Agent = ({userName,userId,type}:AgentProps) => {
     const isCallInactiveOrFinished=callStatus===
     CallStatus.INACTIVE || callStatus===CallStatus.FINISHED
 
+    
 
   return (
     <>
@@ -113,7 +114,7 @@ const Agent = ({userName,userId,type}:AgentProps) => {
     )}
     <div className='w-full flex justify-center'>
         {callStatus !== "ACTIVE"?(
-            <button className='relative btn-call' onClick={()=>handleCall}>
+            <button className='relative btn-call' onClick={handleCall}>
                 <span className={cn(
                 "absolute animate-ping rounded-full opacity-75",
                 callStatus !== "CONNECTING" && "hidden"
@@ -121,10 +122,10 @@ const Agent = ({userName,userId,type}:AgentProps) => {
                    
             <span>
                 {isCallInactiveOrFinished ? "Call":". . ."}
-                    </span>
+            </span>
                
             </button> ):(
-            <button className='btn-disconnect' onClick={()=>handleDisconnect()}>
+            <button className='btn-disconnect' onClick={handleDisconnect}>
                 End
             </button>
         )}
