@@ -11,7 +11,7 @@
 !.yarn/versions
 
 prepwise-eece2-firebase-adminsdk-fbsvc-c2e2802b0f.json
-*.json
+
 .env
 node_modules
 .next
