@@ -1,8 +1,10 @@
-"use server";
+"use server"
 
 import { error } from "console";
 import {db,auth } from "@/firebase/admin"
 import {cookies} from "next/headers";
+import { CollectionReference } from "firebase-admin/firestore";
+import { doc } from "firebase/firestore";
 
 const ONE_WEEK = 60*60*24*7;
 
@@ -111,3 +113,43 @@ export async function isAuthenticated(){
     return !!user;
 }
 
+export async function getInterviewsByUserId(userId:string | undefined) :Promise<Interview[] | null>{
+    if(!userId){
+        console.error("No userid")
+        return [];
+    }
+
+    const interviews = await db
+    .collection('interviews')
+    .where('userId','==',userId)
+    .orderBy('createdAt','desc')
+    .get();
+
+    return interviews.docs.map((doc)=>(
+        { 
+            id:doc.id,
+            ...doc.data()
+        }
+    )) as Interview[];
+
+}
+
+export async function getLatestInterviews(params:GetLatestInterviewsParams):Promise<Interview[] | null>{
+    const {userId,limit=20}=params;
+
+    const interviews = await db
+    .collection('interviews')
+    .orderBy('createdAt','desc')
+    .where('userId','!=',userId)
+    .where('finalized','==',true)
+    .limit(limit)
+    .get();
+
+    return interviews.docs.map((doc)=>(
+        { 
+            id:doc.id,
+            ...doc.data()
+        }
+    )) as Interview[];
+
+}

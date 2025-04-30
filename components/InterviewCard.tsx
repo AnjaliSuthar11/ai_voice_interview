@@ -6,11 +6,12 @@ import { Button } from './ui/button';
 import Link from 'next/link';
 import DisplayTechIcons from './DisplayTechIcons';
 import { string } from 'zod';
+import { getFeedbackByInterviewId } from '@/lib/actions/general.action';
 
-const InterviewCard = ({userId,interviewId,role,type,techstack,createdAt}:InterviewCardProps) => 
+const InterviewCard = async ({userId,id,role,type,techstack,createdAt}:InterviewCardProps) => 
 {
     
-    const feedback=null as Feedback | null;
+    const feedback=userId && id? await getFeedbackByInterviewId({interviewId:id,userId}):null;
 
     const normalizedType=/mix/gi.test(type)?"Mixed":type;
 
@@ -40,14 +41,14 @@ const InterviewCard = ({userId,interviewId,role,type,techstack,createdAt}:Interv
               </div>
             </div>
             <p className='Line-clamp-2 mt-5'>
-              {feedback?.finalAssessment||"you havent taken the interview yet. Take it now to improve your skills"}
+              {feedback?.finalAssessment||"you haven't taken the interview yet. Take it now to improve your skills"}
             </p>
           </div>
           <div className='flex flex-row justify-between'>
             <DisplayTechIcons techStack={techstack}/> 
 
             <Button className='btn-primary'>
-              <Link href={feedback?`/interview/${interviewId}/feedback`:`interview/${interviewId}`}>
+              <Link href={feedback?`/interview/${id}/feedback`:`interview/${id}`}>
               {feedback?'Check Feedback':'View'}
               </Link>
             </Button> 
