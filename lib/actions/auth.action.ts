@@ -136,6 +136,10 @@ export async function getInterviewsByUserId(userId:string | undefined) :Promise<
 
 export async function getLatestInterviews(params:GetLatestInterviewsParams):Promise<Interview[] | null>{
     const {userId,limit=20}=params;
+    if(!userId){
+        console.log("userid is undefined in getLatestInterviews");
+        return[];
+    }
 
     const interviews = await db
     .collection('interviews')

@@ -9,6 +9,13 @@ import { getInterviewsByUserId, getLatestInterviews } from '@/lib/actions/genera
 const page = async () => {
 
   const user = await getCurrentUser();
+  if(!user ||!user.id){
+    return(
+      <section className='p-4'>
+          <h2 className='text-xl font-bold'>Please sign in </h2>
+      </section>
+    )
+  }
   const [userInterviews,latestInterviews]= await Promise.all([
     await getInterviewsByUserId(user?.id!),
     await getLatestInterviews({userId:user?.id!})
