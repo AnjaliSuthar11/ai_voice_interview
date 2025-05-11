@@ -5,16 +5,13 @@ import Image from 'next/image'
 import InterviewCard from "@/components/InterviewCard"
 import { getCurrentUser } from '@/lib/actions/auth.action'
 import { getInterviewsByUserId, getLatestInterviews } from '@/lib/actions/general.action'
+import { redirect } from 'next/navigation'
 
 const page = async () => {
 
   const user = await getCurrentUser();
   if(!user ||!user.id){
-    return(
-      <section className='p-4'>
-          <h2 className='text-xl font-bold'>Please sign in </h2>
-      </section>
-    )
+      redirect("/sign-in");
   }
   const [userInterviews,latestInterviews]= await Promise.all([
     await getInterviewsByUserId(user?.id!),
